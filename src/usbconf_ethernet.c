@@ -121,18 +121,18 @@ static const uint8_t vcom_string0[] = {
 
 /* Vendor string.  */
 static const uint8_t vcom_string1[] = {
-    USB_DESC_BYTE(38),                    /* bLength.                         */
+    USB_DESC_BYTE(10),                    /* bLength.                         */
     USB_DESC_BYTE(USB_DESCRIPTOR_STRING), /* bDescriptorType.                 */
     'C', 0, 'V', 0, 'R', 0, 'A', 0,
 };
 
 /* Device Description string.  */
 static const uint8_t vcom_string2[58] = {
-    USB_DESC_BYTE(58),                    /* bLength.                         */
+    USB_DESC_BYTE(54),                    /* bLength.                         */
     USB_DESC_BYTE(USB_DESCRIPTOR_STRING), /* bDescriptorType.                 */
     'A', 0, 'n', 0, 't', 0, 'o', 0, 'i', 0, 'n', 0, 'e', 0, '\'', 0,
     's', 0, ' ', 0, 'E', 0, 't', 0, 'h', 0, 'e', 0, 'r', 0, 'n', 0, 'e', 0,
-    't', 0, ' ', 0, 'a', 0, 'd', 0, 'a', 0, 'p', 0, 't', 0, 'e', 0, 'r',
+    't', 0, ' ', 0, 'a', 0, 'd', 0, 'a', 0, 'p', 0, 't', 0, 'e', 0, 'r', 0,
 };
 
 /* Serial Number string.  */
@@ -198,7 +198,8 @@ static const USBEndpointConfig ep1config = {
     USB_EP_MODE_TYPE_BULK,
     NULL,
     sduDataTransmitted,
-    sduDataReceived,
+    // sduDataReceived,
+    dataReceived,
     0x0040,
     0x0040,
     &ep1instate,
@@ -222,7 +223,7 @@ static const USBEndpointConfig ep2config = {
     NULL
 };
 
-    static input_queue_t iqueue;
+static input_queue_t iqueue;
 
 /** Handles the USB driver global events.  */
 static void usb_event(USBDriver *usbp, usbevent_t event) {
@@ -238,7 +239,6 @@ static void usb_event(USBDriver *usbp, usbevent_t event) {
             usbInitEndpointI(usbp, USBD1_DATA_REQUEST_EP, &ep1config);
             //usbInitEndpointI(usbp, USBD1_INTERRUPT_REQUEST_EP, &ep2config);
 
-            /* Resetting the state of the CDC subsystem.*/
             iqResetI(&iqueue);
             usbPrepareQueuedReceive(usbp, USBD1_DATA_REQUEST_EP, &iqueue, 40);
             usbStartReceiveI(usbp, USBD1_DATA_REQUEST_EP);
