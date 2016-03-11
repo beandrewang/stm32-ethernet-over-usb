@@ -3,7 +3,6 @@
 #include <chprintf.h>
 #include "usbconf_ethernet.h"
 
-BaseSequentialStream *stdout = (BaseSequentialStream *)&SD2;
 
 static THD_WORKING_AREA(waThread1, 128);
 static THD_FUNCTION(Thread1, arg)
@@ -89,6 +88,10 @@ typedef struct {
     const struct BaseSequentialStreamVMT *vmt;
 } SemihostingStream;
 
+static SemihostingStream stream = {&semi_hosting_vmt};
+
+BaseSequentialStream *stdout = (BaseSequentialStream *)&stream;
+
 
 int main(void)
 {
@@ -102,11 +105,9 @@ int main(void)
     chThdCreateStatic(waThread1, sizeof(waThread1), NORMALPRIO, Thread1, NULL);
 
     usb_ethernet_start();
-    static SemihostingStream stream;
-    stream.vmt = &semi_hosting_vmt;
 
     while (true) {
         chThdSleepMilliseconds(500);
-        chprintf((BaseSequentialStream *)&stream, "hello");
+        chprintf(stdout, "hello");
     }
 }
