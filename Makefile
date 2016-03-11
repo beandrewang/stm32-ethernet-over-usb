@@ -110,7 +110,8 @@ CSRC = $(STARTUPSRC) \
        $(OSALSRC) \
        $(HALSRC) \
        $(PLATFORMSRC) \
-       src/board.c src/main.c
+       $(CHIBIOS)/os/hal/lib/streams/chprintf.c \
+       src/board.c src/main.c src/usbconf_ethernet.c
 
 # C++ sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.
@@ -141,7 +142,8 @@ ASMSRC = $(STARTUPASM) $(PORTASM) $(OSALASM)
 
 INCDIR = $(STARTUPINC) $(KERNINC) $(PORTINC) $(OSALINC) \
          $(HALINC) $(PLATFORMINC) $(TESTINC) \
-         $(CHIBIOS)/os/various src
+         $(CHIBIOS)/os/various $(CHIBIOS)/os/hal/lib/streams \
+         src
 
 #
 # Project, sources and paths
