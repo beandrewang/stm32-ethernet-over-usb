@@ -1,3 +1,4 @@
+#include <string.h>
 #include <ch.h>
 #include <hal.h>
 #include <chprintf.h>
@@ -92,6 +93,10 @@ static SemihostingStream stream = {&semi_hosting_vmt};
 
 BaseSequentialStream *stdout = (BaseSequentialStream *)&stream;
 
+void print(const char *s)
+{
+    semihosting_write(NULL, (const uint8_t *)s, strlen(s));
+}
 
 int main(void)
 {
@@ -108,6 +113,6 @@ int main(void)
 
     while (true) {
         chThdSleepMilliseconds(500);
-        chprintf(stdout, "hello");
+        print("hello\n");
     }
 }

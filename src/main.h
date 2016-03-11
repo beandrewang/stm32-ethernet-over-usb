@@ -9,6 +9,8 @@ extern "C" {
 
 extern BaseSequentialStream *stdout;
 
+void print(const char *s);
+
 #ifdef __cplusplus
 }
 #endif

@@ -282,14 +282,14 @@ static void usb_ethernet_thread(void *p)
     usbStart(&USBD1, &ethernet_usbcfg);
     usbConnectBus(&USBD1);
 
-    chprintf(stdout, "usb cdc conf\r\n");
+    print("usb cdc conf\r\n");
     chSemWait(&usb_configured);
-    chprintf(stdout, "usb cdc ok\r\n");
+    print("usb cdc ok\r\n");
 
 
     while (1) {
         chSemWait(&usb_configured);
-        chprintf(stdout, "rx\r\n");
+        print("rx\r\n");
     }
 }
 
